@@ -2,7 +2,11 @@
 
 
 region="$1"
-path=$(echo /opt/homebrew/lib/outline-vpn/govpn-terraform/terraform.tfstate.d/"$region")
+
+path=$(which outline-vpn)
+path="${path//bin/lib}"
+path=$(echo $path/outline-vpn/terraform.tfstate.d/"$region"/)
+
 apiUrl=$(jq ".ApiUrl" "$path"/outline.json | sed 's/\"//g')
 
 
