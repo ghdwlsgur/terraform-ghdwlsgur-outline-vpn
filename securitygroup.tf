@@ -1,8 +1,3 @@
-
-data "aws_security_group" "default" {
-  name = "default"
-}
-
 resource "aws_security_group" "govpn_security" {
   name        = "govpn-security-group"
   description = "govpn-security-group"
