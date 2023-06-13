@@ -28,9 +28,10 @@ resource "aws_security_group_rule" "management_tcp_port" {
   to_port           = $get_management_port
   protocol          = "tcp"
   cidr_blocks       = $get_my_ip
-  security_group_id = module.instance.SecurityGroupID
+  security_group_id = module.outline-vpn.SecurityGroupID
   lifecycle { create_before_destroy = true }
 }
+
 resource "aws_security_group_rule" "vpn_tcp_port" {
   type              = "ingress"
   description       = "Allow TCP port from only my ip"
@@ -38,7 +39,7 @@ resource "aws_security_group_rule" "vpn_tcp_port" {
   to_port           = $get_vpn_port
   protocol          = "tcp"
   cidr_blocks       = $get_my_ip
-  security_group_id = module.instance.SecurityGroupID  
+  security_group_id = module.outline-vpn.SecurityGroupID  
   lifecycle { create_before_destroy = true }
 }
 EOF
@@ -51,9 +52,10 @@ resource "aws_security_group_rule" "management_udp_port" {
   to_port           = $get_management_port
   protocol          = "udp"
   cidr_blocks       = $get_my_ip
-  security_group_id = module.instance.SecurityGroupID
+  security_group_id = module.outline-vpn.SecurityGroupID
   lifecycle { create_before_destroy = true }
 }
+
 resource "aws_security_group_rule" "vpn_udp_port" {
   type              = "ingress"
   description       = "Allow UDP port from only my ip"
@@ -61,7 +63,7 @@ resource "aws_security_group_rule" "vpn_udp_port" {
   to_port           = $get_vpn_port
   protocol          = "udp"
   cidr_blocks       = $get_my_ip
-  security_group_id = module.instance.SecurityGroupID    
+  security_group_id = module.outline-vpn.SecurityGroupID    
   lifecycle { create_before_destroy = true }
 }
 EOF
