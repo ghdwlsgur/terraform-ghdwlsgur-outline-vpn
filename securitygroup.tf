@@ -18,7 +18,6 @@ resource "aws_security_group_rule" "inbound" {
   lifecycle { create_before_destroy = true }
 }
 
-
 resource "aws_security_group_rule" "outbound" {
   type              = "egress"
   description       = "Allow to anywhere"

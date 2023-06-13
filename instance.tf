@@ -70,6 +70,7 @@ resource "terraform_data" "apply" {
     terraform_data.create_securitygroup_rules.id
   ]
 }
+
 data "external" "access_key" {
   program     = ["bash", "access_key.sh", "${var.aws_region}"]
   working_dir = "${path.module}/external/"

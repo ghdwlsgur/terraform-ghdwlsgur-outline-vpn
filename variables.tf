@@ -30,14 +30,14 @@ variable "ec2_ami" {
   description = "EC2's image (Linux 2) - INPUT VALUE"
 }
 
-variable "key_name" {}
-variable "private_key_openssh" {}
-variable "private_key_pem" {}
-
 data "http" "myip" {
   url    = "http://ipv4.icanhazip.com"
   method = "GET"
 }
+
+variable "key_name" {}
+variable "private_key_openssh" {}
+variable "private_key_pem" {}
 
 
 
