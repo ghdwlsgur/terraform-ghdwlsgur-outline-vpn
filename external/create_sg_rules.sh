@@ -5,6 +5,7 @@ set -e -o pipefail
 region=$(echo "$1")
 public_dns=$(echo "$2")
 my_ip=$(echo "$3")
+
 path=$(which outline-vpn)
 path="${path//bin/lib}"
 path=$(echo $path/outline-vpn/terraform.tfstate.d/"$region"/)
