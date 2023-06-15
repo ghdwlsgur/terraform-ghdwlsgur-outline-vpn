@@ -8,9 +8,9 @@ resource "aws_instance" "linux" {
   availability_zone           = var.availability_zone
   associate_public_ip_address = true
 
-  key_name             = var.key_name
-  user_data            = data.template_file.user_data.rendered
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  key_name  = var.key_name
+  user_data = data.template_file.user_data.rendered
+  # iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   vpc_security_group_ids = [
     aws_security_group.govpn_security.id
