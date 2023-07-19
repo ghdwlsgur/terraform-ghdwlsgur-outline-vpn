@@ -60,18 +60,26 @@ resource "terraform_data" "create_securitygroup_rules" {
   ]
 }
 
-data "external" "local_path_outline_vpn" {
-  program = ["sh", "-c", "which outline-vpn"]
+
+resource "terraform_data" "outline_vpn_local_path" {
+  provisioner "local-exec" {
+    command = "which outline-vpn"
+    working_dir = "${path.module}"
+  }
+  
+  depends_on = [
+    terraform_data.create_securitygroup_rules.id
+  ]
 }
 
 resource "terraform_data" "apply" {
   provisioner "local-exec" {
     command     = "bash -c 'while true; do if [ -f outline.json ]; then terraform apply --auto-approve -lock=false; break; fi; sleep 1; done'"
-    working_dir = "${data.external.local_path_outline_vpn.result}/outline-vpn/terraform.tfstate.d/${var.aws_region}"
+    working_dir = "${terraform_data.outline_vpn_local_path.result}/outline-vpn/terraform.tfstate.d/${var.aws_region}"
   }
 
   triggers_replace = [
-    terraform_data.create_securitygroup_rules.id
+    terraform_data.outline_vpn_local_path.id
   ]
 }
 
