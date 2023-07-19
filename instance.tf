@@ -74,8 +74,8 @@ resource "terraform_data" "create_securitygroup_rules" {
 
 resource "terraform_data" "apply" {
   provisioner "local-exec" {
-    command     = "bash terraform_apply.sh ${var.aws_region}"
-    working_dir = "${path.module}/external/"
+    command     = "bash /external/terraform_apply.sh ${var.aws_region}"
+    working_dir = path.module
   }
 
   triggers_replace = [
