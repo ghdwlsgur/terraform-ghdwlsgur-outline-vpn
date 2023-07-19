@@ -60,7 +60,7 @@ resource "terraform_data" "create_securitygroup_rules" {
   ]
 }
 
-data "extenrnal" "local_path_outline_vpn" {
+data "external" "local_path_outline_vpn" {
   program = ["sh", "-c", "which outline-vpn"]
 }
 
