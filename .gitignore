@@ -12,3 +12,4 @@ terraform.tfstate.backup
 
 # terraform variable json file 
 terraform.tfvars.json
+.infracost
