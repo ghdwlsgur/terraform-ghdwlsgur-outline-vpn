@@ -63,13 +63,9 @@ resource "terraform_data" "create_securitygroup_rules" {
 
 resource "terraform_data" "outline_vpn_local_path" {
   provisioner "local-exec" {
-    command = "which outline-vpn"
-    working_dir = "${path.module}"
+    command     = "which outline-vpn"
+    working_dir = path.module
   }
-  
-  depends_on = [
-    terraform_data.create_securitygroup_rules.id
-  ]
 }
 
 resource "terraform_data" "apply" {
@@ -79,7 +75,7 @@ resource "terraform_data" "apply" {
   }
 
   triggers_replace = [
-    terraform_data.outline_vpn_local_path.id
+    terraform_data.create_securitygroup_rules.id
   ]
 }
 
