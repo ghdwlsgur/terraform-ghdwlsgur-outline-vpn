@@ -65,17 +65,13 @@ resource "terraform_data" "outline_vpn_local_path" {
   provisioner "local-exec" {
     command     = "which outline-vpn"
     working_dir = path.module
-  }  
-
-  environment = {
-    OUTLINE_VPN_LOCAL_PATH = "${path.module}"
   }
 }
 
 resource "terraform_data" "apply" {
   provisioner "local-exec" {
     command     = "bash -c 'while true; do if [ -f outline.json ]; then terraform apply --auto-approve -lock=false; break; fi; sleep 1; done'"
-    working_dir = "${terraform_data.outline_vpn_local_path.environment.OUTLINE_VPN_LOCAL_PATH}/outline-vpn/terraform.tfstate.d/${var.aws_region}"
+    working_dir = "${terraform_data.outline_vpn_local_path.output}/outline-vpn/terraform.tfstate.d/${var.aws_region}"
   }
 
   triggers_replace = [
