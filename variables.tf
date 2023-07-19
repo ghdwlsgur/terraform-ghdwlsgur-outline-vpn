@@ -36,16 +36,6 @@ variable "ec2_ami" {
 #   default     = "/opt/homebrew/lib/outline-vpn/outline-vpn/terraform.tfstate.d"
 # }
 
-data "extenrnal" "local_path_outline_vpn" {
-  program = ["sh", "-c", "which outline-vpn"]
-}
-
-variable "working_dir" {
-  type        = string
-  description = "the local execution location for running the 'terraform apply' command"
-  default     = "${data.external.local_path_outline-vpn}/outline-vpn/terraform.tfstate.d"
-}
-
 data "http" "myip" {
   url    = "http://ipv4.icanhazip.com"
   method = "GET"
