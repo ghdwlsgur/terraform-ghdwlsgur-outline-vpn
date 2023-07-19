@@ -60,11 +60,10 @@ resource "terraform_data" "create_securitygroup_rules" {
   ]
 }
 
-
 data "external" "outline_vpn_local_path" {
   program = <<EOT
     outline_vpn_path=$(which outline-vpn)
-    lib_path=\${dirname(outline_vpn_path)}/lib
+    lib_path=\${dirname("$outline_vpn_path")}/lib
     echo "{ \"path\": \"\$lib_path\" }"
   EOT
 }
