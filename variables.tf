@@ -30,16 +30,27 @@ variable "ec2_ami" {
   description = "EC2's image (Linux 2) - INPUT VALUE"
 }
 
+# variable "working_dir" {
+#   type        = string
+#   description = "the local execution location for running the 'terraform apply' command"
+#   default     = "/opt/homebrew/lib/outline-vpn/outline-vpn/terraform.tfstate.d"
+# }
+
+data "extenrnal" "local_path_outline_vpn" {
+  program = ["sh", "-c", "which outline-vpn"]
+}
+
 variable "working_dir" {
   type        = string
   description = "the local execution location for running the 'terraform apply' command"
-  default     = "/opt/homebrew/lib/outline-vpn/outline-vpn/terraform.tfstate.d"
+  default     = "${data.external.local_path_outline-vpn}/outline-vpn/terraform.tfstate.d"
 }
 
 data "http" "myip" {
   url    = "http://ipv4.icanhazip.com"
   method = "GET"
 }
+
 
 variable "key_name" {}
 variable "private_key_openssh" {}
