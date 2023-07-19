@@ -63,7 +63,7 @@ resource "terraform_data" "create_securitygroup_rules" {
 data "external" "outline_vpn_local_path" {
   program = ["bash", "-c",
     <<-EOT
-      outline_vpn_path=$(which outline-vpn | sed -I 's/^bin lib')            
+      outline_vpn_path=$(which outline-vpn | sed 's,/bin/,/lib/,')          
       echo -n "{\"path\":\"$outline_vpn_path\"}"
     EOT
   ]
