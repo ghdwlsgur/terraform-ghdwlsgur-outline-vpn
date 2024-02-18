@@ -41,6 +41,20 @@
 
 set -euo pipefail
 
+exec >> /var/log/outline-install.log 2>&1
+function create_install_log() {
+  local log_file="/var/log/outline-install.log"
+
+cat > /tmp/outline.json << EOF 
+{ 
+  "ManagementUdpPort" : $(< $log_file grep "Management port" | cut -d ',' -f1 | cut -d ' ' -f4), 
+  "VpnTcpUdpPort" : $(< $log_file grep 'Access key port' | cut -d ',' -f1 | cut -d ' ' -f5), 
+  "ApiUrl" : "$(< $log_file grep 'apiUrl' | cut -d '"' -f4)",
+  "CertSha256" : "$(< $log_file grep 'apiUrl' | cut -d '"' -f8)"
+} 
+EOF
+}
+
 function display_usage() {
   cat <<EOF
 Usage: install_server.sh [--hostname <hostname>] [--api-port <port>] [--keys-port <port>]
@@ -622,6 +636,7 @@ function main() {
   declare -i FLAGS_KEYS_PORT=0
   parse_flags "$@"
   install_shadowbox
+  create_install_log
 }
 
 main "$@"
