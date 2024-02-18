@@ -31,7 +31,7 @@ resource "aws_instance" "linux" {
 
   provisioner "remote-exec" {
     inline = [
-      "while [ ! -f /tmp/outline.json ]; do sleep 2; done",
+      "while [ ! -f /tmp/outline.json ]; do sleep 1; done",
     ]
     connection {
       type        = "ssh"
@@ -48,7 +48,7 @@ resource "aws_instance" "linux" {
 
 resource "terraform_data" "create_securitygroup_rules" {
   provisioner "local-exec" {
-    command     = "bash create_sg_rules.sh ${var.aws_region} ${aws_instance.linux.public_dns} ${chomp(data.http.myip.response_body)} > /dev/null"
+    command     = "bash create_sg_rules.sh ${var.aws_region} ${aws_instance.linux.public_dns} ${chomp(data.http.myip.response_body)}"
     working_dir = "${path.module}/external/"
   }
 
@@ -68,7 +68,7 @@ data "external" "outline_vpn_local_path" {
 
 resource "terraform_data" "apply" {
   provisioner "local-exec" {
-    command     = "bash -c 'while true; do if [ -f outline.json ]; then terraform apply --auto-approve -lock=false; break; fi; sleep 1; done'"
+    command     = "bash -c 'while true; do if [ -f outline.json ]; then terraform state pull ${aws_security_group.govpn_security.id} && terraform apply --auto-approve -lock=false; break; fi; sleep 1; done'"
     working_dir = "${data.external.outline_vpn_local_path.result.path}/outline-vpn/terraform.tfstate.d/${var.aws_region}"
   }
 

@@ -24,7 +24,6 @@ EOF
 }
 
 function main() {
-  trap finish EXIT
   create_install_log
 }
 

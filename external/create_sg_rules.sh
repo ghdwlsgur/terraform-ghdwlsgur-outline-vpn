@@ -1,4 +1,4 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
 set -o nounset -o errexit -o pipefail -o errtrace
 
@@ -6,11 +6,10 @@ function get_install_server_log() {
   local path=$(echo "$1")
   local region=$(echo "$2")
   local public_dns=$(echo "$3")
-  local key_pair="~/.ssh/govpn_$(echo "$region").pem"
-  local ec2_hostname="ec2-user"
-  local outline_file_location="/tmp/outline.json"
+  local key_pair="~/.ssh/govpn_$(echo "$region").pem"  
+  local outline_file="/tmp/outline.json"
       
-  rsync -avz -delete -partial -e "ssh -o StrictHostKeyChecking=no -i $key_pair" "$ec2_hostname"@"$public_dns":"$outline_file_location" "$path" > /dev/null
+  rsync -avz -delete -partial -e "ssh -o StrictHostKeyChecking=no -i $key_pair" ec2-user@"$public_dns":"$outline_file" "$path"
 }
 
 function create_terraform_security_group_rules() {
@@ -70,20 +69,18 @@ resource "aws_security_group_rule" "vpn_udp_port" {
 EOF
 }
 
-function main() {
-  trap finish EXIT
-
+function main() {  
   local region=$(echo "$1")
   local public_dns=$(echo "$2")
   local my_ip=$(echo "$3")
 
   declare -a path 
   path+=("$(which outline-vpn)")
-  path+=("${path[0]}//bin/lib")
+  path+=("${path[0]//bin/lib}")
   path+=("${path[1]}/outline-vpn/terraform.tfstate.d/"$region"/")
 
-  get_install_server_log "$path" "$region" "$public_dns"
-  create_terraform_security_group_rules "$path" "$region" "$my_ip"
+  get_install_server_log "${path[2]}" "$region" "$public_dns"
+  create_terraform_security_group_rules "${path[2]}" "$region" "$my_ip"
 }
 
 main "$@"

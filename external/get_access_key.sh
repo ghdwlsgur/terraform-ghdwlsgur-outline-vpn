@@ -11,16 +11,15 @@ function get_access_key() {
   jq -n --arg accessKey "$accessKey" '{"accessKey": $accessKey}' 
 }
 
-function main() {
-  trap finish EXIT
+function main() {  
+  local region=$(echo "$1") 
 
-  declare -a path 
+  declare -a path
   path+=("$(which outline-vpn)")
-  path+=("${path[0]}//bin/lib")
+  path+=("${path[0]//bin/lib}")
   path+=("${path[1]}/outline-vpn/terraform.tfstate.d/"$region"/")
-
-  local region=$(echo "$1")
-  get_access_key "$path" "$region"
+  
+  get_access_key "${path[2]}" "$region"
 }
 
 main "$@"
