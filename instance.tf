@@ -6,11 +6,9 @@ resource "aws_instance" "linux" {
   ami                         = var.ec2_ami
   instance_type               = var.instance_type
   availability_zone           = var.availability_zone
-  associate_public_ip_address = true
-
+  associate_public_ip_address = true  
   key_name  = var.key_name
   user_data = data.template_file.user_data.rendered
-  # iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   vpc_security_group_ids = [
     aws_security_group.govpn_security.id
@@ -26,7 +24,6 @@ resource "aws_instance" "linux" {
     working_dir = path.module
     on_failure  = continue
   }
-
 
   root_block_device {
     volume_size = var.volume_size
@@ -79,7 +76,6 @@ resource "terraform_data" "apply" {
     terraform_data.create_securitygroup_rules.id
   ]
 }
-
 
 data "external" "access_key" {
   program     = ["bash", "access_key.sh", "${var.aws_region}"]
