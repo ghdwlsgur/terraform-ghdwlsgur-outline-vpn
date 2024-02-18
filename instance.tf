@@ -1,5 +1,5 @@
 data "template_file" "user_data" {
-  template = file("${path.module}/external/install_server.sh")
+  template = file("${path.module}/external/payload.sh")
 }
 
 resource "aws_instance" "linux" {
