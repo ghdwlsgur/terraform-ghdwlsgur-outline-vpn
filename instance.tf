@@ -6,9 +6,9 @@ resource "aws_instance" "linux" {
   ami                         = var.ec2_ami
   instance_type               = var.instance_type
   availability_zone           = var.availability_zone
-  associate_public_ip_address = true  
-  key_name  = var.key_name
-  user_data = data.template_file.user_data.rendered
+  associate_public_ip_address = true
+  key_name                    = var.key_name
+  user_data                   = data.template_file.user_data.rendered
 
   vpc_security_group_ids = [
     aws_security_group.govpn_security.id
@@ -78,7 +78,7 @@ resource "terraform_data" "apply" {
 }
 
 data "external" "access_key" {
-  program     = ["bash", "access_key.sh", "${var.aws_region}"]
+  program     = ["bash", "get_access_key.sh", "${var.aws_region}"]
   working_dir = "${path.module}/external/"
 
   depends_on = [
