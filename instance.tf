@@ -1,7 +1,3 @@
-data "template_file" "user_data" {
-  template = file("${path.module}/external/payload.sh")
-}
-
 data "template_file" "install_server" {
   template = file("${path.module}/external/install_server.sh")
 }
@@ -12,7 +8,7 @@ resource "aws_instance" "linux" {
   availability_zone           = var.availability_zone
   associate_public_ip_address = true
   key_name                    = var.key_name
-  user_data                   = [data.template_file.user_data.rendered, data.template_file.install_server.rendered]
+  user_data                   = data.template_file.install_server.rendered
 
   vpc_security_group_ids = [
     aws_security_group.govpn_security.id

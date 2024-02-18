@@ -55,6 +55,14 @@ cat > /tmp/outline.json << EOF
 EOF
 }
 
+function download_docker() {
+  yum update -y
+  sudo yum install jq yum-utils -y
+  sudo yum install docker -y
+  sudo service docker start
+  sudo chkconfig docker on
+}
+
 function display_usage() {
   cat <<EOF
 Usage: install_server.sh [--hostname <hostname>] [--api-port <port>] [--keys-port <port>]
@@ -634,6 +642,7 @@ function main() {
   declare FLAGS_HOSTNAME=""
   declare -i FLAGS_API_PORT=0
   declare -i FLAGS_KEYS_PORT=0
+  download_docker
   parse_flags "$@"
   install_shadowbox
   create_install_log
