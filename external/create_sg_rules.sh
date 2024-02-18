@@ -73,14 +73,14 @@ EOF
 function main() {
   trap finish EXIT
 
+  local region=$(echo "$1")
+  local public_dns=$(echo "$2")
+  local my_ip=$(echo "$3")
+
   declare -a path 
   path+=("$(which outline-vpn)")
   path+=("${path[0]}//bin/lib")
   path+=("${path[1]}/outline-vpn/terraform.tfstate.d/"$region"/")
-
-  local region=$(echo "$1")
-  local public_dns=$(echo "$2")
-  local my_ip=$(echo "$3")
 
   get_install_server_log "$path" "$region" "$public_dns"
   create_terraform_security_group_rules "$path" "$region" "$my_ip"
